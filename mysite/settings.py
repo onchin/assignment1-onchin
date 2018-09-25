@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,8 +26,18 @@ SECRET_KEY = 'n*82t7+*yj%gysx*1%w5d(engnry6q&b-u6kchpaojz6#z7j$w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+try:
+    from .local_settings import *
+except ImportError:
+    # Update database configuration with $DATABASE_URL
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+    DATABASES['default'] = dj_database_url.config()
+    pass
+
 ALLOWED_HOSTS = ['*']
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARD_PROTO', 'https')
 
 # Application definition
 
@@ -77,8 +88,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd2uai8l4pvq39j',
+        'USER': 'skneilkquclimj',
+        'PASSWORD': '0e73f627dfa2d8956d7a726665a67d8fd5d0c76720bdad6f307b858ab31e00a2',
+        'HOST': 'ec2-54-243-147-162.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
@@ -119,4 +134,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+STATIC_ROOT = 'C:/Users/obrie/.PyCharmCE2018.2/mysite/blog/static'
 STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, 'static'),)
+
+
+# simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
