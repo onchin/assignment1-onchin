@@ -147,3 +147,11 @@ STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, 'static'),)
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# sending emails
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'ochin@unomaha.edu'
+EMAIL_HOST_PASSWORD = 'Teashia1!'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
